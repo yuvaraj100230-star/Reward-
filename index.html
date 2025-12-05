@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard with User Login and Analytics</title>
+    <title>Dashboard with Live Database</title>
     <style>
         * {
             margin: 0;
@@ -307,33 +307,6 @@
             }
         }
         
-        .captcha-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .captcha-question {
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            flex: 1;
-        }
-        
-        .captcha-refresh {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .captcha-refresh:hover {
-            background-color: #2980b9;
-        }
-        
         .stats-table {
             width: 100%;
             border-collapse: collapse;
@@ -427,6 +400,84 @@
             margin-bottom: 20px;
             text-align: center;
         }
+        
+        .live-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+            }
+        }
+        
+        .db-status {
+            font-size: 14px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recent-activity-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        .activity-time {
+            color: #777;
+            font-size: 12px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 4px;
+            display: none;
+            z-index: 1001;
+            max-width: 300px;
+            animation: slideInRight 0.3s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .security-note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 5px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -444,7 +495,8 @@
                 </div>
                 <div class="form-group" id="userIdGroup" style="display: none;">
                     <label for="userId">Admin ID</label>
-                    <input type="text" id="userId" placeholder="Enter admin ID (100230)">
+                    <input type="text" id="userId" placeholder="Enter your admin ID">
+                    <div class="security-note">For security purposes, credentials are not displayed</div>
                 </div>
                 <div class="form-group" id="userNameGroup">
                     <label for="userName">User Name</label>
@@ -452,15 +504,7 @@
                 </div>
                 <div class="form-group" id="passwordGroup" style="display: none;">
                     <label for="userPassword">Password</label>
-                    <input type="password" id="userPassword" placeholder="Enter admin password (2004)">
-                </div>
-                <div class="form-group" id="captchaGroup">
-                    <label>Captcha Verification</label>
-                    <div class="captcha-container">
-                        <div class="captcha-question" id="captchaQuestion"></div>
-                        <button type="button" class="captcha-refresh" id="captchaRefresh">↻</button>
-                    </div>
-                    <input type="text" id="captchaAnswer" placeholder="Enter your answer" style="margin-top: 10px;">
+                    <input type="password" id="userPassword" placeholder="Enter your password">
                 </div>
                 <button type="submit" class="btn">Login</button>
                 <div class="error-message" id="errorMessage">Invalid credentials. Please try again.</div>
@@ -471,7 +515,7 @@
         <div class="dashboard-container" id="dashboardContainer">
             <div class="header">
                 <h1>Dashboard</h1>
-                <div class="info">
+                <div class="user-info">
                     <span id="userRoleDisplay"></span>
                     <span id="userNameDisplay"></span>
                     <button class="logout-btn" id="logoutBtn">Logout</button>
@@ -490,12 +534,18 @@
                 
                 <div class="card">
                     <h3>Recent Activity</h3>
-                    <p>Your recent activity will be displayed here.</p>
+                    <div class="recent-activity-list" id="recentActivityList">
+                        <!-- Recent activity will be populated here -->
+                    </div>
                 </div>
                 
                 <!-- Admin Analytics Card -->
                 <div class="card admin-only" id="adminAnalyticsCard">
                     <h3>User Analytics</h3>
+                    <div class="db-status">
+                        <span class="live-indicator"></span>
+                        <span>Live Database Connected</span>
+                    </div>
                     <div class="stats-summary">
                         <div class="stat-item">
                             <div class="stat-value" id="totalLogins">0</div>
@@ -594,26 +644,11 @@
         <div class="copy-notification" id="copyNotification">
             Code copied to clipboard!
         </div>
+        
+        <!-- Real-time Notification -->
+        <div class="notification" id="notification">
+            <p id="notificationText"></p>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize database in localStorage if it doesn't exist
-            if (!localStorage.getItem('userDatabase')) {
-                localStorage.setItem('userDatabase', JSON.stringify({}));
-            }
-            
-            const loginForm = document.getElementById('loginForm');
-            const loginFormElement = document.getElementById('loginFormElement');
-            const dashboardContainer = document.getElementById('dashboardContainer');
-            const errorMessage = document.getElementById('errorMessage');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const userRoleSelect = document.getElementById('userRole');
-            const userIdInput = document.getElementById('userId');
-            const userNameInput = document.getElementById('userName');
-            const userPasswordInput = document.getElementById('userPassword');
-            const userIdGroup = document.getElementById('userIdGroup');
-            const userNameGroup = document.getElementById('userNameGroup');
-            const passwordGroup = document.getElementById('passwordGroup');
-            const captchaGroup = document.getElementById('captchaGroup');
-            const userRoleDisplay = document.getElementById('userRoleDisplay')
