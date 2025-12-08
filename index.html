@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn C++ Polynomial Operations</title>
+    <title>C++ Learning Hub</title>
     <style>
         * {
             margin: 0;
@@ -62,12 +62,48 @@
             padding: 2rem;
         }
         
-        .section {
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .card {
             background-color: white;
-            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background-color: #3498db;
+            color: white;
+            padding: 1rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .program-section {
+            display: none;
+            background-color: white;
+            margin-top: 2rem;
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .program-section.active {
+            display: block;
         }
         
         h2 {
@@ -205,260 +241,247 @@
 </head>
 <body>
     <header>
-        <h1>C++ Polynomial Operations</h1>
-        <p>Learn how to perform addition and subtraction of cubic polynomials</p>
+        <h1>C++ Learning Hub</h1>
+        <p>Explore and learn about C++ programming through interactive examples</p>
     </header>
     
     <nav>
         <ul>
-            <li><a href="#overview">Overview</a></li>
-            <li><a href="#code">Code</a></li>
-            <li><a href="#explanation">Explanation</a></li>
-            <li><a href="#examples">Examples</a></li>
-            <li><a href="#try-it">Try It</a></li>
+            <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
+            <li><a href="#" onclick="showProgram('student')">Student Records</a></li>
+            <li><a href="#" onclick="showProgram('polynomial')">Polynomial Operations</a></li>
+            <li><a href="#" onclick="showProgram('linkedlist')">Linked List</a></li>
         </ul>
     </nav>
     
     <div class="container">
-        <section id="overview" class="section">
-            <h2>Program Overview</h2>
-            <p>This C++ program allows users to perform basic operations on cubic polynomials. A cubic polynomial has the form:</p>
-            <p style="text-align: center; font-size: 1.2rem; margin: 1rem 0;">ax³ + bx² + cx + d</p>
-            <p>The program can:</p>
-            <ul style="margin-left: 2rem; margin-top: 1rem;">
-                <li>Take coefficients for two cubic polynomials as input</li>
-                <li>Add the two polynomials</li>
-                <li>Subtract the second polynomial from the first</li>
-                <li>Display the results in polynomial form</li>
-            </ul>
-        </section>
+        <div id="dashboard" class="dashboard">
+            <div class="card" onclick="showProgram('student')">
+                <div class="card-header">
+                    <h2>Student Records Management</h2>
+                </div>
+                <div class="card-body">
+                    <p>A program that manages student records, calculates totals and averages, and sorts students by performance.</p>
+                    <p>Learn about:</p>
+                    <ul>
+                        <li>Structures in C++</li>
+                        <li>Arrays of structures</li>
+                        <li>Sorting algorithms</li>
+                        <li>Data manipulation</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card" onclick="showProgram('polynomial')">
+                <div class="card-header">
+                    <h2>Polynomial Operations</h2>
+                </div>
+                <div class="card-body">
+                    <p>A program that performs addition and subtraction operations on cubic polynomials.</p>
+                    <p>Learn about:</p>
+                    <ul>
+                        <li>Mathematical operations in C++</li>
+                        <li>Menu-driven programming</li>
+                        <li>Input/output handling</li>
+                        <li>Conditional statements</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card" onclick="showProgram('linkedlist')">
+                <div class="card-header">
+                    <h2>Linked List Implementation</h2>
+                </div>
+                <div class="card-body">
+                    <p>A program that implements a basic linked list with create, insert, and display operations.</p>
+                    <p>Learn about:</p>
+                    <ul>
+                        <li>Dynamic memory allocation</li>
+                        <li>Pointers and references</li>
+                        <li>Data structures</li>
+                        <li>Linked list operations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         
-        <section id="code" class="section">
-            <h2>Program Code</h2>
+        <!-- Student Records Program Section -->
+        <section id="student-program" class="program-section">
+            <h2>Student Records Management</h2>
+            
+            <h3>Program Overview</h3>
+            <p>This program manages student records using structures. It allows users to input student information, calculate total marks and averages, and then sorts students based on their total marks in descending order.</p>
+            
+            <h3>Program Code</h3>
             <div class="code-container">
-                <button class="copy-button" onclick="copyCode()">Copy Code</button>
-                <pre><code class="language-cpp">#include &lt;iostream&gt;
+                <button class="copy-button" onclick="copyCode('student-code')">Copy Code</button>
+                <pre><code id="student-code">#include &lt;iostream&gt;
 using namespace std;
 
+struct Student {
+string name;
+int rno, m1, m2, m3, total;
+float avg;
+};
+
 int main() {
-    int choice;
+int n;
+cout &lt;&lt; "Enter number of students: ";
+cin &gt;&gt; n;
 
-    // Coefficients for First Polynomial a1x^3 + b1x^2 + c1x + d1
-    int a1, b1, c1, d1;
+Student s[n];  
 
-    // Coefficients for Second Polynomial a2x^3 + b2x^2 + c2x + d2
-    int a2, b2, c2, d2;
+// Input  
+for(int i = 0; i &lt; n; i++) {  
+    cout &lt;&lt; "\nName: "; cin &gt;&gt; s[i].name;  
+    cout &lt;&lt; "Roll No: "; cin &gt;&gt; s[i].rno;  
+    cout &lt;&lt; "Marks 1 2 3: "; cin &gt;&gt; s[i].m1 &gt;&gt; s[i].m2 &gt;&gt; s[i].m3;  
+    s[i].total = s[i].m1 + s[i].m2 + s[i].m3;  
+    s[i].avg = s[i].total / 3.0;  
+}  
 
-    cout &lt;&lt; "Enter the coefficients for FIRST Polynomial:\n";
-    cout &lt;&lt; "a1 = "; cin &gt;&gt; a1;
-    cout &lt;&lt; "b1 = "; cin &gt;&gt; b1;
-    cout &lt;&lt; "c1 = "; cin &gt;&gt; c1;
-    cout &lt;&lt; "d1 = "; cin &gt;&gt; d1;
+// Sort by total (descending)  
+for(int i = 0; i &lt; n-1; i++) {  
+    for(int j = i+1; j &lt; n; j++) {  
+        if(s[i].total &lt; s[j].total) {  
+            Student t = s[i];  
+            s[i] = s[j];  
+            s[j] = t;  
+        }  
+    }  
+}  
 
-    cout &lt;&lt; "\nEnter the coefficients for SECOND Polynomial :\n";
-    cout &lt;&lt; "a2 = "; cin &gt;&gt; a2;
-    cout &lt;&lt; "b2 = "; cin &gt;&gt; b2;
-    cout &lt;&lt; "c2 = "; cin &gt;&gt; c2;
-    cout &lt;&lt; "d2 = "; cin &gt;&gt; d2;
+// Display  
+cout &lt;&lt; "\nNAME\tROLL\tM1\tM2\tM3\tTOTAL\tAVG\n";  
+for(int i = 0; i &lt; n; i++)  
+    cout &lt;&lt; s[i].name &lt;&lt; "\t" &lt;&lt; s[i].rno &lt;&lt; "\t"  
+         &lt;&lt; s[i].m1 &lt;&lt; "\t" &lt;&lt; s[i].m2 &lt;&lt; "\t" &lt;&lt; s[i].m3  
+         &lt;&lt; "\t" &lt;&lt; s[i].total &lt;&lt; "\t" &lt;&lt; s[i].avg &lt;&lt; "\n";  
 
-    while (true) {
-        cout &lt;&lt; "\n=============================\n";
-        cout &lt;&lt; "  Polynomial Operations Menu\n";
-        cout &lt;&lt; "=============================\n";
-        cout &lt;&lt; "1. Addition of Polynomials\n";
-        cout &lt;&lt; "2. Subtraction of Polynomials\n";
-        cout &lt;&lt; "3. Exit\n";
-        cout &lt;&lt; "Enter your choice: ";
-        cin &gt;&gt; choice;
-
-        if (choice == 1) {
-            // ADDITION
-            int A = a1 + a2;
-            int B = b1 + b2;
-            int C = c1 + c2;
-            int D = d1 + d2;
-
-            cout &lt;&lt; "\nAddition Result: "
-                 &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D &lt;&lt; endl;
-        }
-        else if (choice == 2) {
-            // SUBTRACTION
-            int A = a1 - a2;
-            int B = b1 - b2;
-            int C = c1 - c2;
-            int D = d1 - d2;
-
-            cout &lt;&lt; "\nSubtraction Result: "
-                 &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D &lt;&lt; endl;
-        }
-        else if (choice == 3) {
-            cout &lt;&lt; "\nExiting program..." &lt;&lt; endl;
-            break;
-        }
-        else {
-            cout &lt;&lt; "\nInvalid choice! Please try again.\n";
-        }
-    }
-
-    return 0;
+return 0;
 }</code></pre>
             </div>
-        </section>
-        
-        <section id="explanation" class="section">
-            <h2>Code Explanation</h2>
-            <h3>1. Variable Declaration</h3>
-            <p>The program declares variables to store the coefficients of two cubic polynomials:</p>
-            <pre><code>int a1, b1, c1, d1;  // Coefficients for the first polynomial
-int a2, b2, c2, d2;  // Coefficients for the second polynomial</code></pre>
             
-            <h3>2. Input Collection</h3>
-            <p>The program prompts the user to enter the coefficients for both polynomials:</p>
-            <pre><code>cout &lt;&lt; "Enter the coefficients for FIRST Polynomial:\n";
-cout &lt;&lt; "a1 = "; cin &gt;&gt; a1;
-cout &lt;&lt; "b1 = "; cin &gt;&gt; b1;
-cout &lt;&lt; "c1 = "; cin &gt;&gt; c1;
-cout &lt;&lt; "d1 = "; cin &gt;&gt; d1;</code></pre>
+            <h3>Code Explanation</h3>
+            <h4>1. Structure Definition</h4>
+            <p>The program defines a <span class="highlight">Student</span> structure to store student information:</p>
+            <pre><code>struct Student {
+    string name;
+    int rno, m1, m2, m3, total;
+    float avg;
+};</code></pre>
             
-            <h3>3. Menu System</h3>
-            <p>A <span class="highlight">while(true)</span> loop creates a menu system that continues until the user chooses to exit:</p>
-            <pre><code>while (true) {
-    // Display menu options
-    // Process user choice
+            <h4>2. Input</h4>
+            <p>The program takes input for multiple students and calculates their total marks and averages:</p>
+            <pre><code>for(int i = 0; i &lt; n; i++) {  
+    cout &lt;&lt; "\nName: "; cin &gt;&gt; s[i].name;  
+    cout &lt;&lt; "Roll No: "; cin &gt;&gt; s[i].rno;  
+    cout &lt;&lt; "Marks 1 2 3: "; cin &gt;&gt; s[i].m1 &gt;&gt; s[i].m2 &gt;&gt; s[i].m3;  
+    s[i].total = s[i].m1 + s[i].m2 + s[i].m3;  
+    s[i].avg = s[i].total / 3.0;  
 }</code></pre>
             
-            <h3>4. Polynomial Operations</h3>
-            <p>For addition, the program adds corresponding coefficients:</p>
-            <pre><code>int A = a1 + a2;  // Coefficient for x³ term
-int B = b1 + b2;  // Coefficient for x² term
-int C = c1 + c2;  // Coefficient for x term
-int D = d1 + d2;  // Constant term</code></pre>
+            <h4>3. Sorting</h4>
+            <p>The program sorts students based on their total marks in descending order:</p>
+            <pre><code>for(int i = 0; i &lt; n-1; i++) {  
+    for(int j = i+1; j &lt; n; j++) {  
+        if(s[i].total &lt; s[j].total) {  
+            Student t = s[i];  
+            s[i] = s[j];  
+            s[j] = t;  
+        }  
+    }  
+}</code></pre>
             
-            <p>For subtraction, it subtracts the coefficients of the second polynomial from the first:</p>
-            <pre><code>int A = a1 - a2;  // Coefficient for x³ term
-int B = b1 - b2;  // Coefficient for x² term
-int C = c1 - c2;  // Coefficient for x term
-int D = d1 - d2;  // Constant term</code></pre>
+            <h4>4. Display</h4>
+            <p>The program displays the sorted student records in a tabular format:</p>
+            <pre><code>cout &lt;&lt; "\nNAME\tROLL\tM1\tM2\tM3\tTOTAL\tAVG\n";  
+for(int i = 0; i &lt; n; i++)  
+    cout &lt;&lt; s[i].name &lt;&lt; "\t" &lt;&lt; s[i].rno &lt;&lt; "\t"  
+         &lt;&lt; s[i].m1 &lt;&lt; "\t" &lt;&lt; s[i].m2 &lt;&lt; "\t" &lt;&lt; s[i].m3  
+         &lt;&lt; "\t" &lt;&lt; s[i].total &lt;&lt; "\t" &lt;&lt; s[i].avg &lt;&lt; "\n";</code></pre>
             
-            <h3>5. Output</h3>
-            <p>The results are displayed in polynomial form:</p>
-            <pre><code>cout &lt;&lt; "\nAddition Result: "
-     &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D &lt;&lt; endl;</code></pre>
-        </section>
-        
-        <section id="examples" class="section">
-            <h2>Examples</h2>
-            
+            <h3>Example</h3>
             <div class="example">
-                <h3>Example 1: Addition</h3>
-                <p>First Polynomial: 2x³ + 3x² + 4x + 5</p>
-                <p>Second Polynomial: 1x³ + 2x² + 3x + 4</p>
+                <h3>Sample Input and Output</h3>
                 <div class="output">
-                    Addition Result: 3x^3 + 5x^2 + 7x + 9
+                    <p>Enter number of students: 3</p>
+                    <p>Name: John</p>
+                    <p>Roll No: 101</p>
+                    <p>Marks 1 2 3: 85 90 78</p>
+                    <p>Name: Alice</p>
+                    <p>Roll No: 102</p>
+                    <p>Marks 1 2 3: 92 88 95</p>
+                    <p>Name: Bob</p>
+                    <p>Roll No: 103</p>
+                    <p>Marks 1 2 3: 76 82 80</p>
+                    <p>NAME    ROLL    M1      M2      M3      TOTAL   AVG</p>
+                    <p>Alice   102     92      88      95      275     91.6667</p>
+                    <p>John    101     85      90      78      253     84.3333</p>
+                    <p>Bob     103     76      82      80      238     79.3333</p>
                 </div>
             </div>
             
-            <div class="example">
-                <h3>Example 2: Subtraction</h3>
-                <p>First Polynomial: 5x³ + 4x² + 3x + 2</p>
-                <p>Second Polynomial: 1x³ + 2x² + 3x + 4</p>
-                <div class="output">
-                    Subtraction Result: 4x^3 + 2x^2 + 0x + -2
-                </div>
-            </div>
-            
-            <div class="example">
-                <h3>Example 3: Negative Coefficients</h3>
-                <p>First Polynomial: 3x³ - 2x² + 5x - 1</p>
-                <p>Second Polynomial: -1x³ + 4x² - 2x + 3</p>
-                <div class="output">
-                    Addition Result: 2x^3 + 2x^2 + 3x + 2
-                    Subtraction Result: 4x^3 + -6x^2 + 7x + -4
-                </div>
-            </div>
-        </section>
-        
-        <section id="try-it" class="section">
-            <h2>Try It Yourself</h2>
+            <h3>Try It Yourself</h3>
             <div class="compiler-notice">
                 <p><strong>Note:</strong> This is a simplified code editor. For a full C++ development environment, consider using an IDE like Visual Studio Code, Code::Blocks, or an online compiler like Replit.</p>
             </div>
             
             <div class="compiler-container">
                 <div class="tabs">
-                    <button class="tab active" onclick="openTab(event, 'editor-tab')">Editor</button>
-                    <button class="tab" onclick="openTab(event, 'output-tab')">Output</button>
+                    <button class="tab active" onclick="openTab(event, 'student-editor-tab')">Editor</button>
+                    <button class="tab" onclick="openTab(event, 'student-output-tab')">Output</button>
                 </div>
                 
-                <div id="editor-tab" class="tab-content active">
-                    <textarea id="code-editor" style="width: 100%; height: 100%; border: none; font-family: 'Courier New', Courier, monospace; font-size: 14px; padding: 10px;">#include &lt;iostream&gt;
+                <div id="student-editor-tab" class="tab-content active">
+                    <textarea id="student-code-editor" style="width: 100%; height: 100%; border: none; font-family: 'Courier New', Courier, monospace; font-size: 14px; padding: 10px;">#include &lt;iostream&gt;
 using namespace std;
 
+struct Student {
+string name;
+int rno, m1, m2, m3, total;
+float avg;
+};
+
 int main() {
-    int choice;
+int n;
+cout &lt;&lt; "Enter number of students: ";
+cin &gt;&gt; n;
 
-    // Coefficients for First Polynomial a1x^3 + b1x^2 + c1x + d1
-    int a1, b1, c1, d1;
+Student s[n];  
 
-    // Coefficients for Second Polynomial a2x^3 + b2x^2 + c2x + d2
-    int a2, b2, c2, d2;
+// Input  
+for(int i = 0; i &lt; n; i++) {  
+    cout &lt;&lt; "\nName: "; cin &gt;&gt; s[i].name;  
+    cout &lt;&lt; "Roll No: "; cin &gt;&gt; s[i].rno;  
+    cout &lt;&lt; "Marks 1 2 3: "; cin &gt;&gt; s[i].m1 &gt;&gt; s[i].m2 &gt;&gt; s[i].m3;  
+    s[i].total = s[i].m1 + s[i].m2 + s[i].m3;  
+    s[i].avg = s[i].total / 3.0;  
+}  
 
-    cout &lt;&lt; "Enter the coefficients for FIRST Polynomial:\n";
-    cout &lt;&lt; "a1 = "; cin &gt;&gt; a1;
-    cout &lt;&lt; "b1 = "; cin &gt;&gt; b1;
-    cout &lt;&lt; "c1 = "; cin &gt;&gt; c1;
-    cout &lt;&lt; "d1 = "; cin &gt;&gt; d1;
+// Sort by total (descending)  
+for(int i = 0; i &lt; n-1; i++) {  
+    for(int j = i+1; j &lt; n; j++) {  
+        if(s[i].total &lt; s[j].total) {  
+            Student t = s[i];  
+            s[i] = s[j];  
+            s[j] = t;  
+        }  
+    }  
+}  
 
-    cout &lt;&lt; "\nEnter the coefficients for SECOND Polynomial :\n";
-    cout &lt;&lt; "a2 = "; cin &gt;&gt; a2;
-    cout &lt;&lt; "b2 = "; cin &gt;&gt; b2;
-    cout &lt;&lt; "c2 = "; cin &gt;&gt; c2;
-    cout &lt;&lt; "d2 = "; cin &gt;&gt; d2;
+// Display  
+cout &lt;&lt; "\nNAME\tROLL\tM1\tM2\tM3\tTOTAL\tAVG\n";  
+for(int i = 0; i &lt; n; i++)  
+    cout &lt;&lt; s[i].name &lt;&lt; "\t" &lt;&lt; s[i].rno &lt;&lt; "\t"  
+         &lt;&lt; s[i].m1 &lt;&lt; "\t" &lt;&lt; s[i].m2 &lt;&lt; "\t" &lt;&lt; s[i].m3  
+         &lt;&lt; "\t" &lt;&lt; s[i].total &lt;&lt; "\t" &lt;&lt; s[i].avg &lt;&lt; "\n";  
 
-    while (true) {
-        cout &lt;&lt; "\n=============================\n";
-        cout &lt;&lt; "  Polynomial Operations Menu\n";
-        cout &lt;&lt; "=============================\n";
-        cout &lt;&lt; "1. Addition of Polynomials\n";
-        cout &lt;&lt; "2. Subtraction of Polynomials\n";
-        cout &lt;&lt; "3. Exit\n";
-        cout &lt;&lt; "Enter your choice: ";
-        cin &gt;&gt; choice;
-
-        if (choice == 1) {
-            // ADDITION
-            int A = a1 + a2;
-            int B = b1 + b2;
-            int C = c1 + c2;
-            int D = d1 + d2;
-
-            cout &lt;&lt; "\nAddition Result: "
-                 &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D &lt;&lt; endl;
-        }
-        else if (choice == 2) {
-            // SUBTRACTION
-            int A = a1 - a2;
-            int B = b1 - b2;
-            int C = c1 - c2;
-            int D = d1 - d2;
-
-            cout &lt;&lt; "\nSubtraction Result: "
-                 &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D &lt;&lt; endl;
-        }
-        else if (choice == 3) {
-            cout &lt;&lt; "\nExiting program..." &lt;&lt; endl;
-            break;
-        }
-        else {
-            cout &lt;&lt; "\nInvalid choice! Please try again.\n";
-        }
-    }
-
-    return 0;
+return 0;
 }</textarea>
                 </div>
                 
-                <div id="output-tab" class="tab-content">
+                <div id="student-output-tab" class="tab-content">
                     <div style="background-color: #2c3e50; color: #ecf0f1; padding: 1rem; border-radius: 6px; font-family: 'Courier New', Courier, monospace; height: 100%; overflow-y: auto;">
                         <p>Output will appear here when you run the code.</p>
                         <p>To run this code, you would need a C++ compiler like g++.</p>
@@ -468,105 +491,94 @@ int main() {
             </div>
             
             <div style="margin-top: 1rem; text-align: center;">
-                <button style="background-color: #2ecc71; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 4px; cursor: pointer; margin-right: 1rem;" onclick="runCode()">Run Code</button>
-                <button style="background-color: #3498db; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 4px; cursor: pointer;" onclick="resetCode()">Reset Code</button>
+                <button style="background-color: #2ecc71; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 4px; cursor: pointer; margin-right: 1rem;" onclick="runCode('student')">Run Code</button>
+                <button style="background-color: #3498db; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 4px; cursor: pointer;" onclick="resetCode('student')">Reset Code</button>
             </div>
         </section>
-    </div>
-    
-    <div id="notification" class="notification">
-        Code copied to clipboard!
-    </div>
-    
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-            });
-        });
         
-        // Copy code functionality
-        function copyCode() {
-            const codeElement = document.querySelector('pre code');
-            const textArea = document.createElement('textarea');
-            textArea.value = codeElement.textContent;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
+        <!-- Polynomial Operations Program Section -->
+        <section id="polynomial-program" class="program-section">
+            <h2>Polynomial Operations</h2>
             
-            // Show notification
-            const notification = document.getElementById('notification');
-            notification.classList.add('show');
+            <h3>Program Overview</h3>
+            <p>This program performs addition and subtraction operations on cubic polynomials. It takes coefficients for two cubic polynomials as input and allows the user to perform operations through a menu-driven interface.</p>
             
-            // Hide notification after 3 seconds
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+            <h3>Program Code</h3>
+            <div class="code-container">
+                <button class="copy-button" onclick="copyCode('polynomial-code')">Copy Code</button>
+                <pre><code id="polynomial-code">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int choice;
+
+    // Coefficients for First Polynomial a1x^3 + b1x^2 + c1x + d1
+    int a1, b1, c1, d1;
+
+    // Coefficients for Second Polynomial a2x^3 + b2x^2 + c2x + d2
+    int a2, b2, c2, d2;
+
+    cout &lt;&lt; "Enter the coefficients for FIRST Polynomial:\n";
+    cout &lt;&lt; "a1 = "; cin &gt;&gt; a1;
+    cout &lt;&lt; "b1 = "; cin &gt;&gt; b1;
+    cout &lt;&lt; "c1 = "; cin &gt;&gt; c1;
+    cout &lt;&lt; "d1 = "; cin &gt;&gt; d1;
+
+    cout &lt;&lt; "\nEnter the coefficients for SECOND Polynomial :\n";
+    cout &lt;&lt; "a2 = "; cin &gt;&gt; a2;
+    cout &lt;&lt; "b2 = "; cin &gt;&gt; b2;
+    cout &lt;&lt; "c2 = "; cin &gt;&gt; c2;
+    cout &lt;&lt; "d2 = "; cin &gt;&gt; d2;
+
+    while (true) {
+        cout &lt;&lt; "\n=============================\n";
+        cout &lt;&lt; "  Polynomial Operations Menu\n";
+        cout &lt;&lt; "=============================\n";
+        cout &lt;&lt; "1. Addition of Polynomials\n";
+        cout &lt;&lt; "2. Subtraction of Polynomials\n";
+        cout &lt;&lt; "3. Exit\n";
+        cout &lt;&lt; "Enter your choice: ";
+        cin &gt;&gt; choice;
+
+        if (choice == 1) {
+            // ADDITION
+            int A = a1 + a2;
+            int B = b1 + b2;
+            int C = c1 + c2;
+            int D = d1 + d2;
+
+            cout &lt;&lt; "\nAddition Result: "
+                 &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D &lt;&lt; endl;
         }
-        
-        // Tab functionality
-        function openTab(evt, tabName) {
-            // Hide all tab contents
-            const tabContents = document.getElementsByClassName('tab-content');
-            for (let i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove('active');
-            }
-            
-            // Remove active class from all tabs
-            const tabs = document.getElementsByClassName('tab');
-            for (let i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove('active');
-            }
-            
-            // Show the specific tab content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to the button that opened the tab
-            evt.currentTarget.classList.add('active');
+        else if (choice == 2) {
+            // SUBTRACTION
+            int A = a1 - a2;
+            int B = b1 - b2;
+            int C = c1 - c2;
+            int D = d1 - d2;
+
+            cout &lt;&lt; "\nSubtraction Result: "
+                 &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D &lt;&lt; endl;
         }
-        
-        // Run code functionality (simulated)
-        function runCode() {
-            // Switch to output tab
-            document.getElementById('output-tab').classList.add('active');
-            document.getElementById('editor-tab').classList.remove('active');
+        else if (choice == 3) {
+            cout &lt;&lt; "\nExiting program..." &lt;&lt; endl;
+            break;
+        }
+        else {
+            cout &lt;&lt; "\nInvalid choice! Please try again.\n";
+        }
+    }
+
+    return 0;
+}</code></pre>
+            </div>
             
-            // Update tab buttons
-            const tabs = document.getElementsByClassName('tab');
-            tabs[0].classList.remove('active');
-            tabs[1].classList.add('active');
+            <h3>Code Explanation</h3>
+            <h4>1. Variable Declaration</h4>
+            <p>The program declares variables to store the coefficients of two cubic polynomials:</p>
+            <pre><code>int a1, b1, c1, d1;  // Coefficients for the first polynomial
+int a2, b2, c2, d2;  // Coefficients for the second polynomial</code></pre>
             
-            // Simulate output
-            const outputElement = document.querySelector('#output-tab div');
-            outputElement.innerHTML = `
-                <p>Enter the coefficients for FIRST Polynomial:</p>
-                <p>a1 = 2</p>
-                <p>b1 = 3</p>
-                <p>c1 = 4</p>
-                <p>d1 = 5</p>
-                <p></p>
-                <p>Enter the coefficients for SECOND Polynomial :</p>
-                <p>a2 = 1</p>
-                <p>b2 = 2</p>
-                <p>c2 = 3</p>
-                <p>d2 = 4</p>
-                <p></p>
-                <p>=============================</p>
-                <p>  Polynomial Operations Menu</p>
-                <p>=============================</p>
-                <p>1. Addition of Polynomials</p>
-                <p>2. Subtraction of Polynomials</p>
-                <p>3. Exit</p>
-                <p>Enter your choice: 1</p>
-                <p></p>
-                <p
+            <h4>2. Input Collection</h4>
+            <p>The program prompts the user to enter the coefficients for both polynomials:</p>
+     
