@@ -79,6 +79,7 @@
         .nav-container ul {
             display: flex;
             list-style: none;
+            flex-wrap: wrap;
         }
         
         .nav-container ul li {
@@ -231,6 +232,7 @@
                 <li><a href="#" class="nav-link" data-program="double-list"><i class="fas fa-project-diagram"></i> Double Linked List</a></li>
                 <li><a href="#" class="nav-link" data-program="student"><i class="fas fa-user-graduate"></i> Student Marklist</a></li>
                 <li><a href="#" class="nav-link" data-program="expression"><i class="fas fa-calculator"></i> Expression Evaluation</a></li>
+                <li><a href="#" class="nav-link" data-program="polynomial"><i class="fas fa-superscript"></i> Polynomial Operations</a></li>
             </ul>
         </div>
     </nav>
@@ -526,6 +528,85 @@ int main(){
 }</div>
             </div>
         </div>
+        
+        <!-- Polynomial Operations Program -->
+        <div id="polynomial" class="program-container hidden">
+            <div class="program-header">
+                <i class="fas fa-superscript"></i>
+                <h2>Polynomial Operations</h2>
+            </div>
+            <div class="program-content">
+                <div class="program-description">
+                    <h3>About Polynomial Operations</h3>
+                    <p>This program performs operations on two third-degree polynomials. It allows users to input coefficients for both polynomials and then perform addition or subtraction operations on them.</p>
+                </div>
+                <div class="code-container">#include &lt;iostream.h&gt;
+#include &lt;conio.h&gt;
+
+void main() {
+    int choice;
+
+    /* Coefficients for First Polynomial a1x^3 + b1x^2 + c1x + d1 */
+    int a1, b1, c1, d1;
+
+    /* Coefficients for Second Polynomial a2x^3 + b2x^2 + c2x + d2 */
+    int a2, b2, c2, d2;
+
+    clrscr();
+
+    cout &lt;&lt; "Enter the coefficients for FIRST Polynomial:\n";
+    cout &lt;&lt; "a1 = "; cin &gt;&gt; a1;
+    cout &lt;&lt; "b1 = "; cin &gt;&gt; b1;
+    cout &lt;&lt; "c1 = "; cin &gt;&gt; c1;
+    cout &lt;&lt; "d1 = "; cin &gt;&gt; d1;
+
+    cout &lt;&lt; "\nEnter the coefficients for SECOND Polynomial:\n";
+    cout &lt;&lt; "a2 = "; cin &gt;&gt; a2;
+    cout &lt;&lt; "b2 = "; cin &gt;&gt; b2;
+    cout &lt;&lt; "c2 = "; cin &gt;&gt; c2;
+    cout &lt;&lt; "d2 = "; cin &gt;&gt; d2;
+
+    while (1) {
+        cout &lt;&lt; "\n=============================\n";
+        cout &lt;&lt; "  Polynomial Operations Menu\n";
+        cout &lt;&lt; "=============================\n";
+        cout &lt;&lt; "1. Addition of Polynomials\n";
+        cout &lt;&lt; "2. Subtraction of Polynomials\n";
+        cout &lt;&lt; "3. Exit\n";
+        cout &lt;&lt; "Enter your choice: ";
+        cin &gt;&gt; choice;
+
+        if (choice == 1) {
+            int A = a1 + a2;
+            int B = b1 + b2;
+            int C = c1 + c2;
+            int D = d1 + d2;
+
+            cout &lt;&lt; "\nAddition Result: "
+                 &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D;
+        }
+        else if (choice == 2) {
+            int A = a1 - a2;
+            int B = b1 - b2;
+            int C = c1 - c2;
+            int D = d1 - d2;
+
+            cout &lt;&lt; "\nSubtraction Result: "
+                 &lt;&lt; A &lt;&lt; "x^3 + " &lt;&lt; B &lt;&lt; "x^2 + " &lt;&lt; C &lt;&lt; "x + " &lt;&lt; D;
+        }
+        else if (choice == 3) {
+            cout &lt;&lt; "\nExiting program...";
+            break;
+        }
+        else {
+            cout &lt;&lt; "\nInvalid choice! Try again.";
+        }
+    }
+
+    getch();
+}</div>
+            </div>
+        </div>
     </main>
     
     <footer>
@@ -538,28 +619,4 @@ int main(){
             const programContainers = document.querySelectorAll('.program-container');
             
             navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove active class from all links
-                    navLinks.forEach(navLink => {
-                        navLink.classList.remove('active');
-                    });
-                    
-                    // Add active class to clicked link
-                    this.classList.add('active');
-                    
-                    // Hide all program containers
-                    programContainers.forEach(container => {
-                        container.classList.add('hidden');
-                    });
-                    
-                    // Show the selected program container
-                    const programId = this.getAttribute('data-program');
-                    document.getElementById(programId).classList.remove('hidden');
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+                link.addEventListener(
